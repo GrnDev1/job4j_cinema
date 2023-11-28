@@ -1,0 +1,24 @@
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand font-italic" href="/">
+                <H2>CINEMA</H2>
+            </a>
+            <div class="collapse navbar-collapse">
+                <div class="navbar-nav me-auto" style="min-width:800px">
+                    <a class="nav-item nav-link active" href="/">Home</a>
+                    <a class="nav-item nav-link active" th:href="@{/schedule}">Schedule</a>
+                    <a class="nav-item nav-link active" th:href="@{/films}">Filmography</a>
+                </div>
+                <div class="d-flex" th:if="${user.name == 'Guest'}">
+                    <a class="nav-link text-white" th:href="@{/users/register}">Sign up</a>
+                    <a class="nav-link text-white" th:href="@{/users/login}">Log in</a>
+                </div>
+                <div class="d-flex" th:if="${user.name != 'Guest'}">
+                    <a class="nav-link text-white me-3" href="#" th:text="${user.name}"></a>
+                    <a class="nav-link text-white" th:href="@{/users/logout}">Log out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery-3.7.0.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+    <title>Success transaction</title>
+</head>
+<body>
+<div class="container-fluid p-0">
+    <header th:insert="blocks/header :: header"></header>
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <div class="card mt-5 border-success">
+                    <img src="/photos/3.jpg" class="card-img-top" alt="No image">
+                    <div class="card-body">
+                        <div class="text-center border-bottom">
+                            <h2 class="card-title">Thank you!</h2>
+                            <p class="card-text mb-3">Your transaction was successful</p>
+                        </div>
+                        <div class="my-4 text-center">
+                            <H4>Your Place:</H4>
+                        </div>
+                        <div class="row mt-2 text-center">
+                            <div class="col-4"></div>
+                            <div class="col-2">
+                                <span>Row</span>
+                                <H4 th:text="${ticket.getRow()}"></H4><br>
+                            </div>
+                            <div class="col-2">
+                                <span>Place</span>
+                                <H4 th:text="${ticket.getPlace()}"></H4><br>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a href="/schedule" class="btn btn-success col-4">OKAY</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:insert="blocks/footer :: footer"></footer>
+</div>
+</body>
+</html>

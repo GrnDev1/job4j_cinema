@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery-3.7.0.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <title>Cinema</title>
+</head>
+<body>
+<div class="container-fluid p-0">
+    <header th:insert="blocks/header :: header"></header>
+    <div class="container mt-2">
+        <div class="text-center">
+            <a th:href="@{/schedule}">
+                <img src="/photos/1.jpg" class="w-100 mt-3 border shadow-lg rounded" alt="No image"/>
+            </a>
+            <a th:href="@{/films}">
+                <img src="/photos/2.jpg" class="w-100 my-4 border shadow-lg rounded" alt="No image"/>
+            </a>
+        </div>
+    </div>
+    <footer th:insert="blocks/footer :: footer"></footer>
+</div>
+</body>
+</html>
