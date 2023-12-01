@@ -18,7 +18,7 @@ public class Sql2oGenreRepository implements GenreRepository {
     @Override
     public Optional<Genre> findById(int id) {
         try (var connection = sql2o.open()) {
-            var query = connection.createQuery("SELECT * FROM genres WHERE id = :id");
+            var query = connection.createQuery("SELECT * FROM genres WHERE id = :id ");
             var genre = query.addParameter("id", id).executeAndFetchFirst(Genre.class);
             return Optional.ofNullable(genre);
         }
@@ -27,7 +27,7 @@ public class Sql2oGenreRepository implements GenreRepository {
     @Override
     public List<Genre> findAll() {
         try (var connection = sql2o.open()) {
-            var query = connection.createQuery("SELECT * FROM genres");
+            var query = connection.createQuery("SELECT * FROM genres ORDER BY id ");
             return query.executeAndFetch(Genre.class);
         }
     }

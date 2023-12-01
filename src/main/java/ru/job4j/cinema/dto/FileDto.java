@@ -1,5 +1,7 @@
 package ru.job4j.cinema.dto;
 
+import java.util.Arrays;
+
 public class FileDto {
     private String name;
 
@@ -26,4 +28,11 @@ public class FileDto {
         this.content = content;
     }
 
+    @Override
+    public String toString() {
+        return "FileDto{"
+                + " name='" + name + '\''
+                + ", content=" + Arrays.toString(content)
+                + '}';
+    }
 }

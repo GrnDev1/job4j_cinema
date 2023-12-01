@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.job4j.cinema.dto.FilmSessionDto;
-import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.service.FilmSessionService;
 import ru.job4j.cinema.service.HallService;
 
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;

@@ -1,7 +1,16 @@
 package ru.job4j.cinema.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Map;
 
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Ticket {
     public static final Map<String, String> COLUMN_MAPPING = Map.of(
             "id", "id",
@@ -10,6 +19,7 @@ public class Ticket {
             "place_number", "place",
             "user_id", "userId"
     );
+    @EqualsAndHashCode.Include
     private int id;
     private int sessionId;
     private int row;
@@ -24,46 +34,6 @@ public class Ticket {
         this.sessionId = sessionId;
         this.row = row;
         this.place = place;
-        this.userId = userId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(int sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public int getPlace() {
-        return place;
-    }
-
-    public void setPlace(int place) {
-        this.place = place;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
         this.userId = userId;
     }
 }

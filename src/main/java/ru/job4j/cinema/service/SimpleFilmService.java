@@ -39,8 +39,16 @@ public class SimpleFilmService implements FilmService {
     }
 
     private FilmDto getFilmDto(Film film) {
-        return new FilmDto(film.getId(), film.getName(), film.getDescription(), film.getYear(),
-                film.getMinimalAge(), film.getDuration(), getGenre(film.getGenreId()), film.getFileId());
+        return FilmDto.of()
+                .id(film.getId())
+                .name(film.getName())
+                .description(film.getDescription())
+                .year(film.getYear())
+                .minimalAge(film.getMinimalAge())
+                .durationInMinutes(film.getDuration())
+                .genre(getGenre(film.getGenreId()))
+                .fileId(film.getFileId())
+                .build();
     }
 
     private String getGenre(int id) {

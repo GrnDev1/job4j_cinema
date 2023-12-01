@@ -7,6 +7,8 @@ import ru.job4j.cinema.repository.FilmRepository;
 import ru.job4j.cinema.repository.FilmSessionRepository;
 import ru.job4j.cinema.repository.HallRepository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -42,9 +44,23 @@ public class SimpleFilmSessionService implements FilmSessionService {
     }
 
     private FilmSessionDto getFilmSessionDto(FilmSession filmSession) {
-        return new FilmSessionDto(filmSession.getId(), filmSession.getFilmId(), filmSession.getHallId(),
-                getFilmName(filmSession.getFilmId()), getHallName(filmSession.getHallId()),
-                filmSession.getStartTime(), filmSession.getEndTime(), filmSession.getPrice());
+        return FilmSessionDto.of()
+                .id(filmSession.getId())
+                .filmId(filmSession.getFilmId())
+                .hallId(filmSession.getHallId())
+                .filmName(getFilmName(filmSession.getFilmId()))
+                .hallName(getHallName(filmSession.getHallId()))
+                .startTime(filmSession.getStartTime())
+                .endTime(filmSession.getEndTime())
+                .price(filmSession.getPrice())
+                .date(filmSession.getStartTime().format(DateTimeFormatter.ISO_DATE))
+                .start(getTime(filmSession.getStartTime()))
+                .end(getTime(filmSession.getEndTime()))
+                .build();
+    }
+
+    private String getTime(LocalDateTime time) {
+        return time.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
     private String getFilmName(int id) {

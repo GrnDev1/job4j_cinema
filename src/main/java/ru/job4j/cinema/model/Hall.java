@@ -1,7 +1,16 @@
 package ru.job4j.cinema.model;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Map;
 
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Hall {
     public static final Map<String, String> COLUMN_MAPPING = Map.of(
             "id", "id",
@@ -10,6 +19,7 @@ public class Hall {
             "place_count", "placeCount",
             "description", "description"
     );
+    @EqualsAndHashCode.Include
     private int id;
     private String name;
     private int rowCount;
@@ -21,46 +31,6 @@ public class Hall {
         this.name = name;
         this.rowCount = rowCount;
         this.placeCount = placeCount;
-        this.description = description;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getRowCount() {
-        return rowCount;
-    }
-
-    public void setRowCount(int rowCount) {
-        this.rowCount = rowCount;
-    }
-
-    public int getPlaceCount() {
-        return placeCount;
-    }
-
-    public void setPlaceCount(int placeCount) {
-        this.placeCount = placeCount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
     }
 }

@@ -1,4 +1,4 @@
-INSERT INTO films (name, description, year, genre_id, minimal_age, duration_in_minutes, file_id)
+INSERT INTO films (name, description, "year", genre_id, minimal_age, duration_in_minutes, file_id)
 VALUES ('127 Hours',
         'A mountain climber becomes trapped under a boulder while canyoneering alone near Moab, Utah and resorts to desperate measures in order to survive.',
         2010, 1, 16, 93, 1),
