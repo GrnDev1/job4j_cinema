@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface FilmService {
-    FilmDto findById(int id);
+    Optional<FilmDto> findById(int id);
 
     Collection<FilmDto> findAll();
 }

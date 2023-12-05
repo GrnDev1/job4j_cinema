@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.service.TicketService;
 
-import java.util.NoSuchElementException;
-
 @Controller
 @RequestMapping("/tickets")
 public class TicketController {
@@ -21,13 +19,16 @@ public class TicketController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Ticket ticket, Model model) {
-        try {
-            model.addAttribute("ticket", ticket);
-            ticketService.save(ticket);
-            return "tickets/success";
-        } catch (NoSuchElementException e) {
-            model.addAttribute("message", e.getMessage());
+        var ticketOptional = ticketService.save(ticket);
+        if (ticketOptional.isEmpty()) {
+            model.addAttribute("message",
+                    """
+                            Failed to purchase a ticket for the specified seat.
+                            It is probably already occupied.
+                            Go to the ticket booking page and try again ...""");
             return "errors/failure";
         }
+        model.addAttribute("ticket", ticketOptional.get());
+        return "tickets/success";
     }
 }

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.cinema.model.Hall;
 import ru.job4j.cinema.repository.HallRepository;
 
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class SimpleHallService implements HallService {
@@ -15,11 +15,7 @@ public class SimpleHallService implements HallService {
     }
 
     @Override
-    public Hall findById(int id) {
-        var hallOptional = hallRepository.findById(id);
-        if (hallOptional.isEmpty()) {
-            throw new NoSuchElementException("Hall with this id is not found");
-        }
-        return hallOptional.get();
+    public Optional<Hall> findById(int id) {
+        return hallRepository.findById(id);
     }
 }

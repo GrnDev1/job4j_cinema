@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.job4j.cinema.service.FileService;
 
-import java.util.NoSuchElementException;
-
 @Controller
 @RequestMapping("/files")
 public class FileController {
@@ -21,10 +19,10 @@ public class FileController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable int id) {
-        try {
-            return ResponseEntity.ok(fileService.findById(id).getContent());
-        } catch (NoSuchElementException e) {
+        var contentOptional = fileService.findById(id);
+        if (contentOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(contentOptional.get().getContent());
     }
 }

@@ -51,7 +51,7 @@ class SimpleFilmSessionServiceTest {
                 .price(10)
                 .build();
         when(filmSessionRepository.findById(filmSession.getId())).thenReturn(Optional.of(filmSession));
-        var dtoResult = simpleFilmSessionService.findById(filmSession.getId());
+        var dtoResult = simpleFilmSessionService.findById(filmSession.getId()).get();
 
         assertThat(dtoResult.getStartTime()).isEqualTo(filmSession.getStartTime());
         assertThat(dtoResult.getEndTime()).isEqualTo(filmSession.getEndTime());

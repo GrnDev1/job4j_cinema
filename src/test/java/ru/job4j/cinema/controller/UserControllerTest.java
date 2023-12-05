@@ -8,7 +8,7 @@ import ru.job4j.cinema.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
@@ -27,7 +27,7 @@ class UserControllerTest {
     public void whenPostRegisterUserThenRedirectToVacanciesPage() {
         var user = new User(1, "email", "name", "password");
         var userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-        when(userService.save(userArgumentCaptor.capture())).thenReturn(user);
+        when(userService.save(userArgumentCaptor.capture())).thenReturn(Optional.of(user));
 
         var model = new ConcurrentModel();
         var view = userController.register(model, user);
@@ -42,11 +42,11 @@ class UserControllerTest {
         var model = new ConcurrentModel();
         var user = new User();
         var expectedMessage = "My message";
-        when(userService.save(user)).thenThrow(new NoSuchElementException(expectedMessage));
+        when(userService.save(user)).thenReturn(Optional.empty());
         var view = userController.register(model, user);
         var actualExceptionMessage = model.getAttribute("error");
         assertThat(view).isEqualTo("users/register");
-        assertThat(actualExceptionMessage).isEqualTo(expectedMessage);
+        assertThat(actualExceptionMessage).isEqualTo("User with this mail already exists");
         assertThat(user.getName()).isEqualTo("Guest");
     }
 
@@ -58,7 +58,7 @@ class UserControllerTest {
     @Test
     public void whenPostLoginUserThenRedirectToVacanciesPage() {
         var user = new User(1, "email", "name", "password");
-        when(userService.findByEmailAndPassword(user.getEmail(), user.getPassword())).thenReturn(user);
+        when(userService.findByEmailAndPassword(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
         var model = new ConcurrentModel();
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getSession()).thenReturn(mock(HttpSession.class));
@@ -73,13 +73,12 @@ class UserControllerTest {
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getSession()).thenReturn(mock(HttpSession.class));
-        var expectedMessage = "My message";
-        when(userService.findByEmailAndPassword(user.getEmail(), user.getPassword())).thenThrow(new NoSuchElementException(expectedMessage));
+        when(userService.findByEmailAndPassword(user.getEmail(), user.getPassword())).thenReturn(Optional.empty());
         var view = userController.loginUser(user, model, request);
         var actualExceptionMessage = model.getAttribute("error");
 
         assertThat(view).isEqualTo("users/login");
-        assertThat(actualExceptionMessage).isEqualTo(expectedMessage);
+        assertThat(actualExceptionMessage).isEqualTo("Either the username or the password is incorrect, please correct and try again");
         assertThat(user.getName()).isEqualTo("Guest");
     }
 

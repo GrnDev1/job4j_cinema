@@ -1,38 +1,15 @@
 package ru.job4j.cinema.dto;
 
-import java.util.Arrays;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
 public class FileDto {
     private String name;
-
     private byte[] content;
-
-    public FileDto(String name, byte[] content) {
-        this.name = name;
-        this.content = content;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public byte[] getContent() {
-        return content;
-    }
-
-    public void setContent(byte[] content) {
-        this.content = content;
-    }
-
-    @Override
-    public String toString() {
-        return "FileDto{"
-                + " name='" + name + '\''
-                + ", content=" + Arrays.toString(content)
-                + '}';
-    }
 }

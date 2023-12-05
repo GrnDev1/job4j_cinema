@@ -32,7 +32,7 @@ public class Sql2oUserRepository implements UserRepository {
             user.setId(generatedId);
             return Optional.of(user);
         } catch (Exception e) {
-            LOG.info("User with this mail already exists", e);
+            LOG.error("User with this mail already exists", e);
         }
         return Optional.empty();
     }

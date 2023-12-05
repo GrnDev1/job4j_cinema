@@ -8,7 +8,7 @@ import ru.job4j.cinema.repository.GenreRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class SimpleFilmService implements FilmService {
@@ -21,12 +21,12 @@ public class SimpleFilmService implements FilmService {
     }
 
     @Override
-    public FilmDto findById(int id) {
+    public Optional<FilmDto> findById(int id) {
         var filmOptional = filmRepository.findById(id);
         if (filmOptional.isEmpty()) {
-            throw new NoSuchElementException("Film with this id is not found");
+            return Optional.empty();
         }
-        return getFilmDto(filmOptional.get());
+        return Optional.of(getFilmDto(filmOptional.get()));
     }
 
     @Override

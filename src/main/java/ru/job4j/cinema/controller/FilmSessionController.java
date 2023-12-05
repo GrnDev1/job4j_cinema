@@ -11,7 +11,6 @@ import ru.job4j.cinema.service.HallService;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/schedule")
@@ -32,16 +31,19 @@ public class FilmSessionController {
 
     @GetMapping("/{id}")
     public String getById(Model model, @PathVariable int id) {
-        try {
-            var filmSession = filmSessionService.findById(id);
-            model.addAttribute("filmSession", filmSession);
-            var hall = hallService.findById(filmSession.getHallId());
-            model.addAttribute("hall", hall);
-            return "filmSessions/create";
-        } catch (NoSuchElementException e) {
-            model.addAttribute("message", e.getMessage());
+        var filmSessionOptional = filmSessionService.findById(id);
+        if (filmSessionOptional.isEmpty()) {
+            model.addAttribute("message", "Session with this id is not found");
             return "errors/404";
         }
+        model.addAttribute("filmSession", filmSessionOptional.get());
+        var hallOptional = hallService.findById(filmSessionOptional.get().getHallId());
+        if (hallOptional.isEmpty()) {
+            model.addAttribute("message", "Hall with this id is not found");
+            return "errors/404";
+        }
+        model.addAttribute("hall", hallOptional.get());
+        return "filmSessions/create";
     }
 
     private List<FilmSessionDto> sort(List<FilmSessionDto> list) {

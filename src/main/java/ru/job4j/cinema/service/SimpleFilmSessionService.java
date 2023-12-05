@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class SimpleFilmSessionService implements FilmSessionService {
@@ -26,12 +26,12 @@ public class SimpleFilmSessionService implements FilmSessionService {
     }
 
     @Override
-    public FilmSessionDto findById(int id) {
+    public Optional<FilmSessionDto> findById(int id) {
         var filmSessionOptional = filmSessionRepository.findById(id);
         if (filmSessionOptional.isEmpty()) {
-            throw new NoSuchElementException("Session with this id is not found");
+            return Optional.empty();
         }
-        return getFilmSessionDto(filmSessionOptional.get());
+        return Optional.of(getFilmSessionDto(filmSessionOptional.get()));
     }
 
     @Override

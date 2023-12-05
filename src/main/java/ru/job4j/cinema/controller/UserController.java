@@ -11,7 +11,6 @@ import ru.job4j.cinema.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/users")
@@ -29,14 +28,13 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(Model model, @ModelAttribute User user) {
-        try {
-            userService.save(user);
-            return "redirect:/schedule";
-        } catch (NoSuchElementException e) {
-            model.addAttribute("error", e.getMessage());
+        var userOptional = userService.save(user);
+        if (userOptional.isEmpty()) {
+            model.addAttribute("error", "User with this mail already exists");
             user.setName("Guest");
             return "users/register";
         }
+        return "redirect:/schedule";
     }
 
     @GetMapping("/login")
@@ -46,15 +44,15 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(@ModelAttribute User user, Model model, HttpServletRequest request) {
-        try {
-            var session = request.getSession();
-            session.setAttribute("user", userService.findByEmailAndPassword(user.getEmail(), user.getPassword()));
-            return "redirect:/schedule";
-        } catch (NoSuchElementException e) {
-            model.addAttribute("error", e.getMessage());
+        var userOptional = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
+        if (userOptional.isEmpty()) {
+            model.addAttribute("error", "Either the username or the password is incorrect, please correct and try again");
             user.setName("Guest");
             return "users/login";
         }
+        var session = request.getSession();
+        session.setAttribute("user", userOptional.get());
+        return "redirect:/schedule";
     }
 
     @GetMapping("/logout")

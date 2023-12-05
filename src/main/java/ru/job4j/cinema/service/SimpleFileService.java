@@ -7,7 +7,7 @@ import ru.job4j.cinema.repository.FileRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class SimpleFileService implements FileService {
@@ -18,13 +18,13 @@ public class SimpleFileService implements FileService {
     }
 
     @Override
-    public FileDto findById(int id) {
+    public Optional<FileDto> findById(int id) {
         var fileOptional = fileRepository.findById(id);
         if (fileOptional.isEmpty()) {
-            throw new NoSuchElementException("File with this id is not found");
+            return Optional.empty();
         }
         var content = readFileAsBytes(fileOptional.get().getPath());
-        return new FileDto(fileOptional.get().getName(), content);
+        return Optional.of(new FileDto(fileOptional.get().getName(), content));
 
     }
 

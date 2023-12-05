@@ -1,15 +1,13 @@
 package ru.job4j.cinema.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Map;
 
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Hall {
     public static final Map<String, String> COLUMN_MAPPING = Map.of(
@@ -25,12 +23,4 @@ public class Hall {
     private int rowCount;
     private int placeCount;
     private String description;
-
-    public Hall(int id, String name, int rowCount, int placeCount, String description) {
-        this.id = id;
-        this.name = name;
-        this.rowCount = rowCount;
-        this.placeCount = placeCount;
-        this.description = description;
-    }
 }

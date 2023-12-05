@@ -7,11 +7,9 @@ import ru.job4j.cinema.repository.FileRepository;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,7 +28,7 @@ class SimpleFileServiceTest {
 
             when(fileRepository.findById(1)).thenReturn(Optional.of(new File(1, filename, path.toString())));
             var result = simpleFileService.findById(1);
-            assertThat(result).usingRecursiveComparison().isEqualTo(fileDto);
+            assertThat(result.get()).usingRecursiveComparison().isEqualTo(fileDto);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,7 +37,6 @@ class SimpleFileServiceTest {
     @Test
     public void whenGetNoSuchElementException() {
         when(fileRepository.findById(1)).thenReturn(Optional.empty());
-        assertThatThrownBy(() -> simpleFileService.findById(1)).
-                isInstanceOf(NoSuchElementException.class);
+        assertThat(simpleFileService.findById(1)).isEmpty();
     }
 }

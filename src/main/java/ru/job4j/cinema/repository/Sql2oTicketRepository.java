@@ -34,7 +34,7 @@ public class Sql2oTicketRepository implements TicketRepository {
             ticket.setId(generatedId);
             return Optional.of(ticket);
         } catch (Exception e) {
-            LOG.info("Failed to purchase a ticket for a given seat.", e);
+            LOG.error("Failed to purchase a ticket for a given seat.", e);
         }
         return Optional.empty();
     }

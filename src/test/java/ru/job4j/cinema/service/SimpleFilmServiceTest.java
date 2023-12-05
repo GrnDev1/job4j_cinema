@@ -51,7 +51,7 @@ class SimpleFilmServiceTest {
                 .fileId(1)
                 .build();
         when(filmRepository.findById(film1.getId())).thenReturn(Optional.of(film1));
-        var result = simpleFilmService.findById(1);
+        var result = simpleFilmService.findById(1).get();
         assertThat(result.getId()).isEqualTo(film1.getId());
         assertThat(result.getName()).isEqualTo(film1.getName());
     }

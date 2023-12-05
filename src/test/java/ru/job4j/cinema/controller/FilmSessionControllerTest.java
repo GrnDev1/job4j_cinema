@@ -10,6 +10,7 @@ import ru.job4j.cinema.service.HallService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
@@ -61,9 +62,9 @@ class FilmSessionControllerTest {
                 .start("12 : 00")
                 .end("13 : 33")
                 .build();
-        when(filmSessionService.findById(1)).thenReturn(expectedFilmSessionDto);
+        when(filmSessionService.findById(1)).thenReturn(Optional.of(expectedFilmSessionDto));
         var expectedHall = new Hall(1, expectedFilmSessionDto.getHallName(), 10, 10, "-");
-        when(hallService.findById(expectedFilmSessionDto.getHallId())).thenReturn(expectedHall);
+        when(hallService.findById(expectedFilmSessionDto.getHallId())).thenReturn(Optional.of(expectedHall));
         var model = new ConcurrentModel();
         var view = filmSessionController.getById(model, 1);
         var actualFilmSessions = model.getAttribute("filmSession");

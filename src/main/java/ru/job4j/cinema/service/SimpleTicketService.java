@@ -5,7 +5,7 @@ import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.repository.TicketRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class SimpleTicketService implements TicketService {
@@ -16,25 +16,13 @@ public class SimpleTicketService implements TicketService {
     }
 
     @Override
-    public Ticket save(Ticket ticket) {
-        var ticketOptional = ticketRepository.save(ticket);
-        if (ticketOptional.isEmpty()) {
-            throw new NoSuchElementException(
-                    """
-                            Failed to purchase a ticket for the specified seat.
-                            It is probably already occupied.
-                            Go to the ticket booking page and try again ...""");
-        }
-        return ticketOptional.get();
+    public Optional<Ticket> save(Ticket ticket) {
+        return ticketRepository.save(ticket);
     }
 
     @Override
-    public Ticket findById(int id) {
-        var ticketOptional = ticketRepository.findById(id);
-        if (ticketOptional.isEmpty()) {
-            throw new NoSuchElementException("Ticket with this id is not found");
-        }
-        return ticketOptional.get();
+    public Optional<Ticket> findById(int id) {
+        return ticketRepository.findById(id);
     }
 
     @Override
