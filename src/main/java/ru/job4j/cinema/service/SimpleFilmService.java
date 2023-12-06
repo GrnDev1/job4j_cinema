@@ -1,7 +1,9 @@
 package ru.job4j.cinema.service;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import ru.job4j.cinema.dto.FilmDto;
+import ru.job4j.cinema.mappers.FilmMapper;
 import ru.job4j.cinema.model.Film;
 import ru.job4j.cinema.repository.FilmRepository;
 import ru.job4j.cinema.repository.GenreRepository;
@@ -14,10 +16,12 @@ import java.util.Optional;
 public class SimpleFilmService implements FilmService {
     private final FilmRepository filmRepository;
     private final GenreRepository genreRepository;
+    private final FilmMapper filmMapper;
 
     public SimpleFilmService(FilmRepository sql2oFilmRepository, GenreRepository sql2oGenreRepository) {
         this.filmRepository = sql2oFilmRepository;
         this.genreRepository = sql2oGenreRepository;
+        this.filmMapper = Mappers.getMapper(FilmMapper.class);
     }
 
     @Override
@@ -26,29 +30,17 @@ public class SimpleFilmService implements FilmService {
         if (filmOptional.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(getFilmDto(filmOptional.get()));
+        var film = filmOptional.get();
+        return Optional.of(filmMapper.getFilmFromEntity(film, getGenre(film.getGenreId())));
     }
 
     @Override
     public List<FilmDto> findAll() {
         List<FilmDto> list = new ArrayList<>();
         for (Film film : filmRepository.findAll()) {
-            list.add(getFilmDto(film));
+            list.add(filmMapper.getFilmFromEntity(film, getGenre(film.getGenreId())));
         }
         return list;
-    }
-
-    private FilmDto getFilmDto(Film film) {
-        return FilmDto.of()
-                .id(film.getId())
-                .name(film.getName())
-                .description(film.getDescription())
-                .year(film.getYear())
-                .minimalAge(film.getMinimalAge())
-                .durationInMinutes(film.getDuration())
-                .genre(getGenre(film.getGenreId()))
-                .fileId(film.getFileId())
-                .build();
     }
 
     private String getGenre(int id) {

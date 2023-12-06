@@ -1,14 +1,14 @@
 package ru.job4j.cinema.service;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import ru.job4j.cinema.dto.FilmSessionDto;
+import ru.job4j.cinema.mappers.FilmSessionMapper;
 import ru.job4j.cinema.model.FilmSession;
 import ru.job4j.cinema.repository.FilmRepository;
 import ru.job4j.cinema.repository.FilmSessionRepository;
 import ru.job4j.cinema.repository.HallRepository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,11 +18,13 @@ public class SimpleFilmSessionService implements FilmSessionService {
     private final FilmRepository filmRepository;
     private final FilmSessionRepository filmSessionRepository;
     private final HallRepository hallRepository;
+    private final FilmSessionMapper filmSessionMapper;
 
     public SimpleFilmSessionService(FilmRepository sql2oFilmRepository, FilmSessionRepository sql2oFilmSessionRepository, HallRepository sql2oHallRepository) {
         this.filmRepository = sql2oFilmRepository;
         this.filmSessionRepository = sql2oFilmSessionRepository;
         this.hallRepository = sql2oHallRepository;
+        this.filmSessionMapper = Mappers.getMapper(FilmSessionMapper.class);
     }
 
     @Override
@@ -31,36 +33,22 @@ public class SimpleFilmSessionService implements FilmSessionService {
         if (filmSessionOptional.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(getFilmSessionDto(filmSessionOptional.get()));
+        var filmSession = filmSessionOptional.get();
+        return Optional.of(getDto(filmSession));
     }
 
     @Override
     public List<FilmSessionDto> findAll() {
         List<FilmSessionDto> list = new ArrayList<>();
         for (FilmSession filmSession : filmSessionRepository.findAll()) {
-            list.add(getFilmSessionDto(filmSession));
+            list.add(getDto(filmSession));
         }
         return list;
     }
 
-    private FilmSessionDto getFilmSessionDto(FilmSession filmSession) {
-        return FilmSessionDto.of()
-                .id(filmSession.getId())
-                .filmId(filmSession.getFilmId())
-                .hallId(filmSession.getHallId())
-                .filmName(getFilmName(filmSession.getFilmId()))
-                .hallName(getHallName(filmSession.getHallId()))
-                .startTime(filmSession.getStartTime())
-                .endTime(filmSession.getEndTime())
-                .price(filmSession.getPrice())
-                .date(filmSession.getStartTime().format(DateTimeFormatter.ISO_DATE))
-                .start(getTime(filmSession.getStartTime()))
-                .end(getTime(filmSession.getEndTime()))
-                .build();
-    }
-
-    private String getTime(LocalDateTime time) {
-        return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+    private FilmSessionDto getDto(FilmSession filmSession) {
+        return filmSessionMapper.getFilmSessionFromEntity(filmSession,
+                getFilmName(filmSession.getFilmId()), getHallName(filmSession.getHallId()));
     }
 
     private String getFilmName(int id) {
